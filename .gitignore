@@ -1,0 +1,6 @@
+# macOS specific stuff
+*.DS_Store
+._*
+
+# password file
+credentials.js

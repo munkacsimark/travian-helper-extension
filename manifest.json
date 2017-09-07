@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+    "name": "travian helper",
+    "version": "0.0.1",
+    "content_scripts": [{
+        "matches": ["https://ts6.travian.hu/*"],
+        "js": [
+            "credentials.js",
+            "content/content.js"
+        ],
+        "run_at": "document_end"
+    }],
+    "background": {
+        "scripts": ["background/background.js"],
+        "persistent": false
+    },
+    "browser_action": {
+        "default_popup": "popup/popup.html"
+    },
+    "permissions": [
+        "tabs",
+        "notifications"
+    ]
+}
