@@ -1,4 +1,8 @@
-var siren = new Audio('./assets/Red Alert-SoundBible.com-108009997.mp3');
+import { credentials } from '../credentials';
+
+console.log(credentials);
+
+var siren = new Audio('./assets/alert.mp3');
 
 (function() {
     chrome.runtime.onMessage.addListener(messageHandler);
@@ -6,7 +10,7 @@ var siren = new Audio('./assets/Red Alert-SoundBible.com-108009997.mp3');
     chrome.notifications.onClosed.addListener(notificationCloseHandler);
 })();
 
-function messageHandler(request, sender, sendResponse) {
+function messageHandler(request, sender) {
     switch (request) {
         case 'REFRESH':
             chrome.tabs.reload(sender.tab.id);

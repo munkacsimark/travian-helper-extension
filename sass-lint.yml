@@ -1,0 +1,12 @@
+options:
+  formatter: stylish
+  merge-default-rules: false
+files:
+  include: '**/*.s+(a|c)ss'
+rules:
+
+  no-color-literals: 1
+  indentation:
+    - 2
+    -
+      size: 4

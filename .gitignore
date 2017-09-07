@@ -2,5 +2,12 @@
 *.DS_Store
 ._*
 
+# node modules
+node_modules
+
+# generated files
+dist
+zip
+
 # password file
 credentials.js

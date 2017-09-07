@@ -1,0 +1,30 @@
+{
+  "name": "travian-helper-extension",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:munkacsimark/travian-helper-extension.git",
+  "author": "Munkácsi Márk <munkacsimark@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "watch": "gulp watch",
+    "build": "gulp build",
+    "lint": "gulp js-lint && gulp sass-lint"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babelify": "^7.3.0",
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-clean-css": "^3.8.0",
+    "gulp-eslint": "^4.0.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sass-lint": "^1.3.3",
+    "gulp-sequence": "^0.4.6",
+    "gulp-uglify-es": "^0.1.3",
+    "gulp-zip": "^4.0.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
