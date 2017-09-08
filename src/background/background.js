@@ -1,7 +1,3 @@
-import { credentials } from '../credentials';
-
-console.log(credentials);
-
 var siren = new Audio('./assets/alert.mp3');
 
 (function() {

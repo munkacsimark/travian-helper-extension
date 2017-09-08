@@ -1,3 +1,5 @@
+import { credentials } from '../credentials';
+
 (function() {
     autoLogin();
     initReloadTimer();
@@ -21,8 +23,8 @@ function initReloadTimer() {
     }
 
     function _getRandomSec(minSec, maxSec) {
-        min = Math.ceil(minSec);
-        max = Math.floor(maxSec);
+        var min = Math.ceil(minSec);
+        var max = Math.floor(maxSec);
         var returnValue = Math.floor(Math.random() * (max - min + 1)) + min;
         console.info('Refresh time(sec): ' + returnValue);
         return returnValue * 1000; // to millisec
@@ -36,7 +38,7 @@ function hideUnnecessaryItems() {
     ];
     for (var item of selectorList) {
         var elements = document.querySelectorAll(item);
-        for (element of elements) {
+        for (var element of elements) {
             element.style.display = 'none';
         }
     }

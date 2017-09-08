@@ -5,7 +5,6 @@
     "content_scripts": [{
         "matches": ["https://ts6.travian.hu/*"],
         "js": [
-            "credentials.js",
             "content/content.js"
         ],
         "run_at": "document_end"
