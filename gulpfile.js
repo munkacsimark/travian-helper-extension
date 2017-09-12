@@ -53,7 +53,7 @@ gulp.task('bundle-background', () =>
     .bundle()
     .pipe(source('background.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('./dist/background/'))
 );
 

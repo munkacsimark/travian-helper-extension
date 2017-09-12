@@ -1,48 +1,25 @@
-var siren = new Audio('./assets/alert.mp3');
+import Siren from '../siren';
+import { MessageHandler } from '../message_handler';
+import { NotificationHandler } from '../notification_handler';
 
-(function() {
-    chrome.runtime.onMessage.addListener(messageHandler);
-    chrome.notifications.onClicked.addListener(notificationClickHandler);
-    chrome.notifications.onClosed.addListener(notificationCloseHandler);
-})();
+class BackgroundApp {
 
-function messageHandler(request, sender) {
-    switch (request) {
-        case 'REFRESH':
-            chrome.tabs.reload(sender.tab.id);
-            break;
-        case 'ATTACK':
-            chrome.notifications.create('attack', {
-                type: 'basic',
-                iconUrl: './assets/ic_warning_black_36px.svg',
-                title: 'Travian incomming attack!',
-                message: '',
-                requireInteraction: true
-            });
-            _playSiren();
-            break;
+    constructor() {
+        this._siren = new Siren();
+        this._messageHandler = new MessageHandler(this._siren);
+        this._notificationHandler = new NotificationHandler(this._siren);
+
+        this._attachEventListeners();
+    }
+
+    _attachEventListeners() {
+        chrome.runtime.onMessage
+            .addListener(this._messageHandler.listen);
+        chrome.notifications.onClicked
+            .addListener(this._notificationHandler.click);
+        chrome.notifications.onClosed
+            .addListener(this._notificationHandler.close);
     }
 }
 
-function notificationClickHandler(id) {
-    if (id !== 'attack') return;
-    _stopSiren();
-}
-
-function notificationCloseHandler(id) {
-    if (id !== 'attack') return;
-    _stopSiren();
-}
-
-function _playSiren() {
-    siren.addEventListener('ended', function() {
-        this.currentTime = 0;
-        this.play();
-    }, false);
-    siren.play();
-}
-
-function _stopSiren() {
-    siren.pause();
-    siren.currentTime = 0;
-}
+new BackgroundApp();

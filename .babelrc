@@ -1,5 +1,7 @@
 {
     "presets": [
+        ["stage-2"],
         ["babel-preset-env"]
-    ]
+    ],
+    "plugins": ["transform-class-properties"]
 }
