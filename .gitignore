@@ -11,3 +11,6 @@ zip
 
 # password file
 credentials.js
+
+# IDE stuff
+.vscode

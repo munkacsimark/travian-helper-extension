@@ -18,7 +18,7 @@ class MessageHandler {
                 chrome.tabs.reload(sender.tab.id);
                 break;
             case Messages.ATTACK:
-                this._notificationHandler.showAttackNotification(NotificationIds.ATTACK);
+                this._notificationHandler.showNotification(NotificationIds.ATTACK);
                 this._siren.loop();
                 break;
             default:

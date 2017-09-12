@@ -1,6 +1,3 @@
-import { Siren } from './siren';
-import { Messages } from './message_handler';
-
 const NotificationIds = Object.freeze({
     ATTACK: 'attack',
 });
@@ -15,7 +12,7 @@ class NotificationHandler {
         }
     }
 
-    showAttackNotification = (type) => {
+    showNotification = (type) => {
         chrome.notifications.create(type,
             Object.assign(this._baseOptions, {
                 iconUrl: 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjM2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNMSAyMWgyMkwxMiAyIDEgMjF6bTEyLTNoLTJ2LTJoMnYyem0wLTRoLTJ2LTRoMnY0eiIvPjwvc3ZnPg==',

@@ -12,7 +12,7 @@ class BackgroundApp {
         this._attachEventListeners();
     }
 
-    _attachEventListeners() {
+    _attachEventListeners = () => {
         chrome.runtime.onMessage
             .addListener(this._messageHandler.listen);
         chrome.notifications.onClicked

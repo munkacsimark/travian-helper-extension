@@ -13,5 +13,6 @@
     "rules": {
         "quotes": [1, "single", { "allowTemplateLiterals": true }],
         "no-console": 0
-    }
+    },
+    "parser": "babel-eslint"
 }

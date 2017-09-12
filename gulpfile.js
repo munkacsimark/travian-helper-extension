@@ -11,9 +11,20 @@ const clean = require('gulp-clean');
 const gulpSequence = require('gulp-sequence');
 const uglify = require('gulp-uglify-es').default;
 const cleanCSS = require('gulp-clean-css');
+const notifier = require('node-notifier');
+const gulpif = require('gulp-if');
 
+let build = false;
 const date = new Date();
 const _getDate = () => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}__${date.getHours()}-${date.getMinutes()}`;
+
+function handleError(error) {
+    notifier.notify('⚠️ Error.');
+    console.log(error.toString());
+    if (!build) this.emit('end');
+}
+
+gulp.task('is-build', () => build = true);
 
 gulp.task('assets', () => 
     gulp.src('./src/assets/**/*').pipe(gulp.dest('./dist/assets/'))
@@ -24,17 +35,17 @@ gulp.task('html', () => gulp.src('./src/popup/popup.html').pipe(gulp.dest('./dis
 gulp.task('manifest', () => gulp.src('./src/manifest.json').pipe(gulp.dest('./dist/')));
 
 gulp.task('js-lint', () => 
-    gulp.src('./src/background/background.js')
+    gulp.src('./src/**/*.js')
         .pipe(eslint())
         .pipe(eslint.format())
-        .pipe(eslint.failAfterError())
+        .pipe(eslint.failAfterError()).on('error', handleError)
 );
 
 gulp.task('sass-lint', () =>
     gulp.src('./src/popup/scss/**/*.scss')
         .pipe(sassLint({ configFile: './sass-lint.yml' }))
         .pipe(sassLint.format())
-        .pipe(sassLint.failOnError())
+        .pipe(sassLint.failOnError()).on('error', handleError)
 );
 
 gulp.task('sass', () =>
@@ -50,10 +61,10 @@ gulp.task('bundle-background', () =>
         debug: false,
     })
     .transform(babelify)
-    .bundle()
+    .bundle().on('error', handleError)
     .pipe(source('background.js'))
     .pipe(buffer())
-    //.pipe(uglify())
+    .pipe(gulpif(build, uglify()))
     .pipe(gulp.dest('./dist/background/'))
 );
 
@@ -63,10 +74,10 @@ gulp.task('bundle-content', () =>
         debug: false,
     })
     .transform(babelify)
-    .bundle()
+    .bundle().on('error', handleError)
     .pipe(source('content.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    .pipe(gulpif(build, uglify()))
     .pipe(gulp.dest('./dist/content/'))
 );
 
@@ -76,10 +87,10 @@ gulp.task('bundle-popup', () =>
         debug: false,
     })
     .transform(babelify)
-    .bundle()
+    .bundle().on('error', handleError)
     .pipe(source('popup.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    .pipe(gulpif(build, uglify()))
     .pipe(gulp.dest('./dist/popup/'))
 );
 
@@ -102,4 +113,10 @@ gulp.task('empty-dist', () =>
     gulp.src('./dist/', {read: false}).pipe(clean())
 );
 
-gulp.task('build', gulpSequence(['js-lint', 'sass-lint'], 'empty-dist', ['bundle-all', 'sass', 'html', 'assets', 'manifest'], 'zip'));
+gulp.task('build', gulpSequence(
+    'is-build',
+    ['js-lint', 'sass-lint'],
+    'empty-dist',
+    ['bundle-all', 'sass', 'html', 'assets', 'manifest'],
+    'zip')
+);
