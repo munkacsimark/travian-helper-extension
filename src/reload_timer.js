@@ -1,4 +1,4 @@
-import { Messages } from './message_handler';
+import { MessageActions } from './message_handler';
 
 class ReloadTimer {
 
@@ -19,7 +19,7 @@ class ReloadTimer {
     _setMouseMoveTimeout = () => setTimeout(() => {
             console.info('mouse is idle');
             this._refreshTimeout = setTimeout(
-                () => chrome.runtime.sendMessage(Messages.REFRESH),
+                () => chrome.runtime.sendMessage({ action: MessageActions.REFRESH }),
                 this._getRandomSec(120, 300) // 2-5 min
             );
         }, 10000);

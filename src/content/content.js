@@ -1,4 +1,4 @@
-import { Messages } from '../message_handler';
+import { MessageActions } from '../message_handler';
 import ReloadTimer from '../reload_timer';
 import AttackDetector from '../attack_detector';
 import UiCleaner from '../ui_cleaner';
@@ -11,7 +11,7 @@ class ContentApp {
         UiCleaner.clearUi();
         if (LoginHandler.loggedOut()) LoginHandler.login();
         if (AttackDetector.isAttack()) {
-            chrome.runtime.sendMessage(Messages.ATTACK);
+            chrome.runtime.sendMessage({ action: MessageActions.ATTACK });
         }
     }
 

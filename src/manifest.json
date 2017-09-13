@@ -74,6 +74,7 @@
     },
     "permissions": [
         "tabs",
-        "notifications"
+        "notifications",
+        "storage"
     ]
 }
