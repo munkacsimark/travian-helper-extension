@@ -1,15 +1,45 @@
-import { credentials } from './credentials'; // FIXME
+import { LocalStorageKeys, LocalStorageService } from './local_storage_service';
 
 class LoginHandler {
 
-    static loggedOut = () => !!document.querySelector('form[name="login"]');
+    constructor() {
+        this._storage = new LocalStorageService();
+        this._loginForm = document.querySelector('form[name="login"]');
+    }
 
-    static login = () => {
-        const _loginForm = document.querySelector('form[name="login"]');
-        if (!_loginForm || !credentials) return;
-        _loginForm.querySelector('input[name="name"]').value = credentials.name;
-        _loginForm.querySelector('input[name="password"]').value = atob(credentials.password);
-        _loginForm.submit();
+    loggedOut = () => !!document.querySelector('form[name="login"]');
+
+    login = () => {
+        if (!this._loginForm || this._errorExists()) return;
+
+        this._storage._getMultiple([
+            LocalStorageKeys.USERNAME,
+            LocalStorageKeys.PASSWORD,
+            LocalStorageKeys.AUTO_LOGIN_ON,
+        ]).then((credentials) => {
+            if (!credentials[LocalStorageKeys.AUTO_LOGIN_ON]) {
+                console.info('Auto login turned off.');
+                return;
+            }
+            if (!credentials[LocalStorageKeys.USERNAME] || !credentials[LocalStorageKeys.PASSWORD]) {
+                console.info('No credentials.');
+                return;
+            }
+            this._loginForm.querySelector('input[name="name"]').value = credentials[LocalStorageKeys.USERNAME];
+            this._loginForm.querySelector('input[name="password"]').value = credentials[LocalStorageKeys.PASSWORD];
+            this._loginForm.submit();
+        });
+    }
+
+    _errorExists = () => {
+        let _error = false;
+        for (let element of this._loginForm.querySelectorAll('.error')) {
+            if ((element.innerHTML.trim() || {}).length > 0) {
+                _error = true;
+                break;
+            }
+        }
+        return _error;
     }
 
 }

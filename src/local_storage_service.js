@@ -1,8 +1,8 @@
 
 const LocalStorageKeys = Object.freeze({
-    SIREN_STATUS: 'siren_status',
     USERNAME: 'user_name',
     PASSWORD: 'password',
+    AUTO_LOGIN_ON: 'auto_login_on',
 });
 
 class LocalStorageService {
@@ -49,6 +49,10 @@ class LocalStorageService {
             }
             chrome.storage.local.set(data, resolve);
         });
+    }
+
+    _clear = () => {
+        chrome.storage.local.clear();
     }
 
 }

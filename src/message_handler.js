@@ -12,7 +12,7 @@ const MessageActions = Object.freeze({
 const PopupMessages = Object.freeze({
     USERNAME: 'user_name',
     PASSWORD: 'password',
-    CREDENTIALS_EXISTS: 'credentials_exists',
+    AUTO_LOGIN_ON: 'auto_login_on',
 });
 
 class MessageHandler {
@@ -36,9 +36,12 @@ class MessageHandler {
                 this._storage._getMultiple([
                     LocalStorageKeys.USERNAME,
                     LocalStorageKeys.PASSWORD,
+                    LocalStorageKeys.AUTO_LOGIN_ON,
                 ]).then((response) => {
                     callback({
-                        [PopupMessages.CREDENTIALS_EXISTS]: !!response[LocalStorageKeys.USERNAME] && !!response[LocalStorageKeys.PASSWORD]
+                        [PopupMessages.USERNAME]: response[LocalStorageKeys.USERNAME],
+                        [PopupMessages.PASSWORD]: response[LocalStorageKeys.PASSWORD],
+                        [PopupMessages.AUTO_LOGIN_ON]: response[LocalStorageKeys.AUTO_LOGIN_ON],
                     });
                 });
                 break;
@@ -46,10 +49,11 @@ class MessageHandler {
                 this._storage._set({
                     [LocalStorageKeys.USERNAME]: message[PopupMessages.USERNAME],
                     [LocalStorageKeys.PASSWORD]: message[PopupMessages.PASSWORD],
+                    [LocalStorageKeys.AUTO_LOGIN_ON]: message[PopupMessages.AUTO_LOGIN_ON],
                 }).then(callback);
                 break;
             case MessageActions.DELETE_LOGIN_DATA:
-                //
+                this._storage._clear();
                 break;
             default:
                 console.error('Unknown request.');

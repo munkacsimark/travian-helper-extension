@@ -12,6 +12,7 @@ class PopupApp {
 
     _handleLoginDataForm = () => {
         this._ui.loginDataForm.addEventListener('submit', this._loginDataSubmitHandler);
+        this._ui.loginDataForm.querySelector('.login-data-clear').addEventListener('click', this._loginDataDeleteHandler);
     }
 
     _loginDataSubmitHandler = (event) => {
@@ -20,11 +21,16 @@ class PopupApp {
             action: MessageActions.SAVE_LOGIN_DATA,
             [PopupMessages.USERNAME]: this._ui.loginUserName,
             [PopupMessages.PASSWORD]: this._ui.loginPassword,
-        }, this._showMessage('Credentials saved.'));
+            [PopupMessages.AUTO_LOGIN_ON]: this._ui.autoLogin,
+        }, this._ui.showLoginMessage('Credentials saved.', false));
     }
 
-    _showMessage = (message) => {
-        this._ui.showMessage(message);
+    _loginDataDeleteHandler = () => {
+        chrome.runtime.sendMessage({ action: MessageActions.DELETE_LOGIN_DATA });
+        this._ui.autoLogin = false;
+        this._ui.loginUserName = '';
+        this._ui.loginPassword = '';
+        this._ui.showLoginMessage('Credentials deleted.', false);
     }
 
     _initUi = () => {

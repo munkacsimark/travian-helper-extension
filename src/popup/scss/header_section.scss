@@ -1,0 +1,10 @@
+@import './var/colors.scss';
+
+header {
+    background-color: $color-header;
+    padding: 5px 10px;
+    .header-text {
+        font-size: 12px;
+        margin: 0;
+    }
+}

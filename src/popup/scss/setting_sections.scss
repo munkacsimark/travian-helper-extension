@@ -1,0 +1,63 @@
+@import './var/colors.scss';
+
+.setting-section {
+    margin: 10px;
+
+    legend {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .setting-message {
+        display: none;
+        margin: 10px 0 5px 0;
+        font-weight: bold;
+
+        &.show { display: block; }
+        &.error { color: $color-text-error; }
+        &.success { color: $color-text-success; }
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input {
+        padding: 3px 5px;
+        border-radius: 2px;
+        border: 1px solid $color-border;
+    }
+
+    button{
+        padding: 5px 10px;
+        border: $color-border;
+        border-radius: 2px;
+        color: #fff;
+        transition: .2s;
+
+        &[type="submit"] {
+            background-color: $color-button-submit;
+
+            &:hover {
+                background-color: lighten($color-button-submit, 10%);
+            }
+        }
+
+        &.login-data-clear {
+            background-color: $color-button-delete;
+
+            &:hover {
+                background-color: lighten($color-button-delete, 10%);
+            }
+        }
+
+        &:hover {
+            transition: .2s;
+        }
+
+    }
+
+    .form-row {
+        margin: 10px 0;
+    }
+}

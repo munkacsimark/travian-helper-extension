@@ -1,19 +1,45 @@
 <!doctype html>
 <html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./popup.css">
+    </head>
     <body>
-        <main>
-            <section>
-                <p class="message-bar"></p>
+        <main class="container">
+            <header>
+                <h1 class="header-text">Travian helper</h1>
+            </header>
+            <section class="setting-section">
                 <form class="login-data">
-                    <label for="user-name">
-                        Username
-                        <input type="text" id="user-name" required>
-                    </label>
-                    <label for="password">
-                        Password
-                        <input type="password" id="password" required>
-                    </label>
-                    <button type="submit">Save</button>
+                    <fieldset>
+                        <legend>Automatic login settings</legend>
+                        <p>
+                            When travian logs out, extension can login to continue doing its work.
+                            Your username and password will be stored in extensions storage
+                            locally without syncing it between devices. You can delete stored
+                            data at any time. Info about storage:
+                            https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/storage
+                        </p>
+                        <div class="form-row">
+                            <div>
+                                <label for="user-name">Username</label>
+                                <input type="text" id="user-name" required>
+                            </div>
+                            <div>
+                                <label for="password">Password</label>
+                                <input type="password" id="password" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="login-automatically">Login automatically</label>
+                            <input type="checkbox" id="login-automatically">
+                        </div>
+                        <div class="form-row">
+                            <button type="submit">Save login settings</button>
+                            <button type="button" class="login-data-clear">Delete stored data.</button>
+                        </div>
+                        <span class="setting-message"></span>
+                    </fieldset>
                 </form>
             </section>
         </main>

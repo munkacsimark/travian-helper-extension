@@ -1,0 +1,19 @@
+@import './var/colors.scss';
+@import './var/sizes.scss';
+
+*:focus {
+    outline: none;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 2px;
+    border: 1px solid $color-border;
+    border-radius: 2px;
+    width: $size-main;
+}

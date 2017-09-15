@@ -7,9 +7,12 @@ import LoginHandler from '../login_handler';
 class ContentApp {
 
     constructor() {
+        this._login = new LoginHandler();
         new ReloadTimer();
         UiCleaner.clearUi();
-        if (LoginHandler.loggedOut()) LoginHandler.login();
+        if (this._login.loggedOut()) {
+            setTimeout(this._login.login, 10000);
+        }
         if (AttackDetector.isAttack()) {
             chrome.runtime.sendMessage({ action: MessageActions.ATTACK });
         }
