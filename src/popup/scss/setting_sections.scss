@@ -26,16 +26,19 @@
         padding: 3px 5px;
         border-radius: 2px;
         border: 1px solid $color-border;
+
+        &[type="number"] {
+            width: 50px;
+        }
     }
 
     button{
         padding: 5px 10px;
         border: $color-border;
         border-radius: 2px;
-        color: #fff;
         transition: .2s;
 
-        &[type="submit"] {
+        &[type="submit"] {color: #fff;
             background-color: $color-button-submit;
 
             &:hover {
@@ -44,6 +47,7 @@
         }
 
         &.login-data-clear {
+            color: #fff;
             background-color: $color-button-delete;
 
             &:hover {

@@ -12,7 +12,7 @@ class LoginHandler {
     login = () => {
         if (!this._loginForm || this._errorExists()) return;
 
-        this._storage._getMultiple([
+        this._storage.get([
             LocalStorageKeys.USERNAME,
             LocalStorageKeys.PASSWORD,
             LocalStorageKeys.AUTO_LOGIN_ON,

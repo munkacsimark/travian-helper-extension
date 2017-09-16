@@ -8,11 +8,17 @@ class PopupApp {
 
         this._initUi();
         this._handleLoginDataForm();
+        this._handleAttackDataForm();
     }
 
     _handleLoginDataForm = () => {
         this._ui.loginDataForm.addEventListener('submit', this._loginDataSubmitHandler);
         this._ui.loginDataForm.querySelector('.login-data-clear').addEventListener('click', this._loginDataDeleteHandler);
+    }
+
+    _handleAttackDataForm = () => {
+        this._ui.attackDataForm.addEventListener('submit', this._attackDataSubmitHandler);
+        this._ui.attackDataForm.querySelector('.siren-test').addEventListener('click', this._playSirenHandler);
     }
 
     _loginDataSubmitHandler = (event) => {
@@ -25,17 +31,37 @@ class PopupApp {
         }, this._ui.showLoginMessage('Credentials saved.', false));
     }
 
+    _attackDataSubmitHandler = (event) => {
+        event.preventDefault();
+        if (parseInt(this._ui.refreshFrom) > parseInt(this._ui.refreshTo)) {
+            this._ui.showAttackMessage('"From" can\'t be bigger than "to".', true);
+            return;
+        }
+        chrome.runtime.sendMessage({
+            action: MessageActions.SAVE_ATTACK_DATA,
+            [PopupMessages.PLAY_SIREN]: this._ui.playSiren,
+            [PopupMessages.SHOW_NOTIFICATION]: this._ui.showNotification,
+            [PopupMessages.REFRESH_FROM]: this._ui.refreshFrom,
+            [PopupMessages.REFRESH_TO]: this._ui.refreshTo,
+        }, this._ui.showAttackMessage('Attack data saved.', false));
+    }
+
     _loginDataDeleteHandler = () => {
-        chrome.runtime.sendMessage({ action: MessageActions.DELETE_LOGIN_DATA });
+        chrome.runtime.sendMessage({
+            action: MessageActions.DELETE_LOGIN_DATA
+        }, this._ui.showLoginMessage('Credentials deleted.', false));
         this._ui.autoLogin = false;
         this._ui.loginUserName = '';
         this._ui.loginPassword = '';
-        this._ui.showLoginMessage('Credentials deleted.', false);
+    }
+
+    _playSirenHandler = () => {
+        chrome.runtime.sendMessage({ action: MessageActions.TEST_SIREN });
     }
 
     _initUi = () => {
         chrome.runtime.sendMessage({
-            action: MessageActions.LOAD_LOGIN_DATA,
+            action: MessageActions.LOAD_POPUP_DATA,
         }, this._ui.initView);
     }
 

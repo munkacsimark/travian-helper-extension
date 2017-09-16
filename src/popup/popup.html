@@ -42,6 +42,38 @@
                     </fieldset>
                 </form>
             </section>
+            <section class="setting-section">
+                <form class="attack-data">
+                    <fieldset>
+                        <legend>Attack notification settings</legend>
+                        <div class="form-row">
+                            <label for="play-siren">Play siren</label>
+                            <input type="checkbox" id="play-siren">
+                            <button type="text" class="siren-test">Siren sound test</button>
+                        </div>
+                        <div class="form-row">
+                            <label for="show-notification">Show notification</label>
+                            <input type="checkbox" id="show-notification">
+                        </div>
+                        <p>
+                            Extension will refresh page at random time in the given range.
+                            It's necessary because of hiding from BOT hunter. Defaults to 2-5
+                            and values are given in minutes. To turn feature off, add 0-0.
+                        </p>
+                        <div class="form-row">
+                            Random number
+                            <label for="refresh-from">from</label>
+                            <input type="number" id="refresh-from" required>
+                            <label for="refresh-to">to</label>
+                            <input type="number" id="refresh-to" required> minute.
+                        </div>
+                        <div class="form-row">
+                            <button type="submit">Save login settings</button>
+                        </div>
+                        <span class="setting-message"></span>
+                    </fieldset>
+                </form>
+            </section>
         </main>
         <script type="text/javascript" src="./popup.js"></script>
     </body>

@@ -1,4 +1,5 @@
 import { MessageActions } from './message_handler';
+import { LocalStorageKeys } from './local_storage_service';
 
 class ReloadTimer {
 
@@ -10,24 +11,29 @@ class ReloadTimer {
     }
 
     _handleMouseMove = () => {
-        console.info('mouse moved...');
+        console.info('Mouse moved.');
         clearTimeout(this._mouseMoveTimeout);
         clearTimeout(this._refreshTimeout);
         this._mouseMoveTimeout = this._setMouseMoveTimeout();
     }
 
     _setMouseMoveTimeout = () => setTimeout(() => {
-            console.info('mouse is idle');
-            this._refreshTimeout = setTimeout(
-                () => chrome.runtime.sendMessage({ action: MessageActions.REFRESH }),
-                this._getRandomSec(120, 300) // 2-5 min
-            );
+            console.info('Mouse is idle.');
+            chrome.runtime.sendMessage({ action: MessageActions.GET_REFRESH_MINS }, (data) => {
+                const from = data[LocalStorageKeys.REFRESH_FROM] || 2;
+                const to = data[LocalStorageKeys.REFRESH_TO] || 5;
+                if (parseInt(from) === 0 && parseInt(to) === 0) return;
+                this._refreshTimeout = setTimeout(
+                    () => chrome.runtime.sendMessage({ action: MessageActions.REFRESH }),
+                    this._getRandomSec(from, to)
+                );
+            });
         }, 10000);
     
     _getRandomSec = (min, max) => {
-        const returnValue = Math.floor(Math.random() * (max - min + 1)) + min;
-        console.info(`Refresh after(sec): ${returnValue}`);
-        return returnValue * 1000;
+        const returnValue = Math.floor(Math.random() * (max * 60000 - min * 60000 + 1)) + min * 60000;
+        console.info(`Refreshing after ${(returnValue / 60000).toFixed(2)} mins.`);
+        return returnValue;
     }
 
     _throttle = (functionToCall) => {

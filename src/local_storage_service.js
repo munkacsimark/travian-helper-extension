@@ -3,6 +3,10 @@ const LocalStorageKeys = Object.freeze({
     USERNAME: 'user_name',
     PASSWORD: 'password',
     AUTO_LOGIN_ON: 'auto_login_on',
+    PLAY_SIREN: 'play_siren',
+    SHOW_NOTIFICATION: 'show_notification',
+    REFRESH_FROM: 'refresh_from',
+    REFRESH_TO: 'refresh_to',
 });
 
 class LocalStorageService {
@@ -17,9 +21,11 @@ class LocalStorageService {
         }
     }
 
-    set = (data) => {
-        return this._set(data);
-    }
+    set = (data) => this._set(data);
+
+    clear = () => this._clear();
+
+    remove = (data) => this._remove(data);
 
     _getSingle = (key) => {
         return new Promise((resolve) => {
@@ -51,9 +57,9 @@ class LocalStorageService {
         });
     }
 
-    _clear = () => {
-        chrome.storage.local.clear();
-    }
+    _remove = (data) => chrome.storage.local.remove(data);
+
+    _clear = () => chrome.storage.local.clear();
 
 }
 
