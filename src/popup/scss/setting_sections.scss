@@ -34,12 +34,15 @@
 
     button{
         padding: 5px 10px;
-        border: $color-border;
         border-radius: 2px;
         transition: .2s;
+        font-weight: bold;
+        background-color: $color-button-default;
+        border: 1px solid darken($color-button-default, 20%);
 
         &[type="submit"] {color: #fff;
             background-color: $color-button-submit;
+            border: 1px solid darken($color-button-submit, 20%);
 
             &:hover {
                 background-color: lighten($color-button-submit, 10%);
@@ -49,6 +52,7 @@
         &.login-data-clear {
             color: #fff;
             background-color: $color-button-delete;
+            border: 1px solid darken($color-button-delete, 20%);
 
             &:hover {
                 background-color: lighten($color-button-delete, 10%);
