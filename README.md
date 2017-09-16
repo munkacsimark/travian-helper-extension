@@ -1,3 +1,4 @@
+[![Donate using PayPal](https://img.shields.io/badge/paypal-donate-green.svg)](https://paypal.me/munkacsimark)
 ## travian-helper-extension
 A [WebExtension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions) which makes the game comfortable.
 
@@ -13,3 +14,5 @@ Currently working parts:
 - **hide unnecessary stuffs** The extension can hide site elements and icons which you can't use without gold.
 
 Feel free to [contribute](https://github.com/munkacsimark/travian-helper-extension/blob/master/CONTRIBUTING.md) or [open issues](https://github.com/munkacsimark/travian-helper-extension/issues). ✊
+
+[Buy me a coffee](https://paypal.me/munkacsimark) if you like this project.☕️
