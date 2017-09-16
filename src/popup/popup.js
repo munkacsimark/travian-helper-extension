@@ -9,6 +9,7 @@ class PopupApp {
         this._initUi();
         this._handleLoginDataForm();
         this._handleAttackDataForm();
+        this._handleOtherDataForm();
     }
 
     _handleLoginDataForm = () => {
@@ -19,6 +20,10 @@ class PopupApp {
     _handleAttackDataForm = () => {
         this._ui.attackDataForm.addEventListener('submit', this._attackDataSubmitHandler);
         this._ui.attackDataForm.querySelector('.siren-test').addEventListener('click', this._playSirenHandler);
+    }
+
+    _handleOtherDataForm = () => {
+        this._ui.otherDataForm.addEventListener('submit', this._otherDataSubmitHandler);
     }
 
     _loginDataSubmitHandler = (event) => {
@@ -53,6 +58,14 @@ class PopupApp {
         this._ui.autoLogin = false;
         this._ui.loginUserName = '';
         this._ui.loginPassword = '';
+    }
+
+    _otherDataSubmitHandler = (event) => {
+        event.preventDefault();
+        chrome.runtime.sendMessage({
+            action: MessageActions.SAVE_OTHER_DATA,
+            [PopupMessages.HIDE_GOLD]: this._ui.hideGold,
+        }, this._ui.showOtherMessage('Settings saved.', false));
     }
 
     _playSirenHandler = () => {

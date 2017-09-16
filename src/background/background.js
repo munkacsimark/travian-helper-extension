@@ -10,6 +10,8 @@ class BackgroundApp {
         this._notificationHandler = new NotificationHandler(this._siren);
 
         this._attachEventListeners();
+        chrome.browserAction.setBadgeText({text: ''});
+        chrome.browserAction.setBadgeBackgroundColor({color: '#f00'});
     }
 
     _attachEventListeners = () => {

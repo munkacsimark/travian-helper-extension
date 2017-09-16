@@ -10,6 +10,9 @@ const MessageActions = Object.freeze({
     TEST_SIREN: 'test_siren',
     SAVE_ATTACK_DATA: 'save_attack_data',
     GET_REFRESH_MINS: 'get_refresh_mins',
+    SAVE_OTHER_DATA: 'save_other_data',
+    HIDE_GOLD: 'hide_gold',
+    SET_BADGE: 'set_badge',
 });
 
 const PopupMessages = Object.freeze({
@@ -20,6 +23,12 @@ const PopupMessages = Object.freeze({
     SHOW_NOTIFICATION: 'show_notification',
     REFRESH_FROM: 'refresh_from',
     REFRESH_TO: 'refresh_to',
+    HIDE_GOLD: 'hide_gold',
+});
+
+const BadgeMessages = Object.freeze({
+    BADGE_TEXT: 'badge_text',
+    BADGE_COLOR: 'badge_color',
 });
 
 class MessageHandler {
@@ -36,6 +45,7 @@ class MessageHandler {
                 chrome.tabs.reload(sender.tab.id);
                 break;
             case MessageActions.ATTACK:
+                chrome.browserAction.setBadgeText({text: 'Atck'});
                 this._storage.get([
                     LocalStorageKeys.PLAY_SIREN,
                     LocalStorageKeys.SHOW_NOTIFICATION,
@@ -59,6 +69,7 @@ class MessageHandler {
                     LocalStorageKeys.SHOW_NOTIFICATION,
                     LocalStorageKeys.REFRESH_FROM,
                     LocalStorageKeys.REFRESH_TO,
+                    LocalStorageKeys.HIDE_GOLD,
                 ]).then((response) => {
                     callback({
                         [PopupMessages.USERNAME]: response[LocalStorageKeys.USERNAME],
@@ -68,6 +79,7 @@ class MessageHandler {
                         [PopupMessages.SHOW_NOTIFICATION]: response[LocalStorageKeys.SHOW_NOTIFICATION],
                         [PopupMessages.REFRESH_FROM]: response[LocalStorageKeys.REFRESH_FROM],
                         [PopupMessages.REFRESH_TO]: response[LocalStorageKeys.REFRESH_TO],
+                        [PopupMessages.HIDE_GOLD]: response[LocalStorageKeys.HIDE_GOLD],
                     });
                 });
                 break;
@@ -102,6 +114,11 @@ class MessageHandler {
                     LocalStorageKeys.REFRESH_TO,
                 ]).then(callback);
                 break;
+            case MessageActions.SAVE_OTHER_DATA:
+                this._storage.set({
+                    [LocalStorageKeys.HIDE_GOLD]: message[PopupMessages.HIDE_GOLD],
+                }).then(callback);
+                break;
             default:
                 console.error('Unknown request.');
         }
@@ -114,4 +131,5 @@ export {
     MessageActions,
     MessageHandler,
     PopupMessages,
+    BadgeMessages,
 };

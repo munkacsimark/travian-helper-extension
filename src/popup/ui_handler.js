@@ -5,6 +5,7 @@ class UiHandler {
     constructor() {
         this.loginDataForm = document.querySelector('.login-data');
         this.attackDataForm = document.querySelector('.attack-data');
+        this.otherDataForm = document.querySelector('.other-data');
     }
 
     initView = (data) => {
@@ -15,6 +16,7 @@ class UiHandler {
         this.showNotification = data[PopupMessages.SHOW_NOTIFICATION];
         this.refreshFrom = data[PopupMessages.REFRESH_FROM];
         this.refreshTo = data[PopupMessages.REFRESH_TO];
+        this.hideGold = data[PopupMessages.HIDE_GOLD];
     }
 
     get loginUserName() { return this.loginDataForm.querySelector('#user-name').value; }
@@ -38,12 +40,19 @@ class UiHandler {
     get refreshTo() { return this.attackDataForm.querySelector('#refresh-to').value; }
     set refreshTo(refreshTo) { this.attackDataForm.querySelector('#refresh-to').value = refreshTo ? refreshTo : 5; }
 
+    get hideGold() { return this.otherDataForm.querySelector('#hide-golds').checked; }
+    set hideGold(hideGold) { this.otherDataForm.querySelector('#hide-golds').checked = hideGold === undefined ? true : hideGold; }
+
     showLoginMessage(message, error) {
         this._showMessage(this.loginDataForm.querySelector('.setting-message'), message, error);
     }
 
     showAttackMessage(message, error) {
         this._showMessage(this.attackDataForm.querySelector('.setting-message'), message, error);
+    }
+
+    showOtherMessage(message, error) {
+        this._showMessage(this.otherDataForm.querySelector('.setting-message'), message, error);
     }
 
     _showMessage = (element, message, error) => {

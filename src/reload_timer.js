@@ -24,8 +24,7 @@ class ReloadTimer {
                 const to = data[LocalStorageKeys.REFRESH_TO] || 5;
                 if (parseInt(from) === 0 && parseInt(to) === 0) return;
                 this._refreshTimeout = setTimeout(
-                    () => chrome.runtime.sendMessage({ action: MessageActions.REFRESH }),
-                    this._getRandomSec(from, to)
+                    () => chrome.runtime.sendMessage({ action: MessageActions.REFRESH }), this._getRandomSec(from, to)
                 );
             });
         }, 10000);

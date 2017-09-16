@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "travian helper",
-    "version": "0.0.1",
+    "name": "Travian helper T4",
+    "version": "0.1.0",
     "content_scripts": [{
         "matches": [
             "*://*.travian.ae/*",
@@ -70,6 +70,7 @@
         "persistent": false
     },
     "browser_action": {
+        "default_icon": "assets/icon_36_2x.png",
         "default_popup": "popup/popup.html"
     },
     "permissions": [
