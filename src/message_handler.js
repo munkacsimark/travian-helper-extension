@@ -42,6 +42,7 @@ class MessageHandler {
     listen = (message, sender, callback) => {
         switch (message.action) {
             case MessageActions.REFRESH:
+                chrome.browserAction.setBadgeText({text: ''});
                 chrome.tabs.reload(sender.tab.id);
                 break;
             case MessageActions.ATTACK:
