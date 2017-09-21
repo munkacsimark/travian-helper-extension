@@ -21,7 +21,6 @@ class ContentApp {
         if (location.pathname === '/dorf1.php') {
             this._storage.get([LocalStorageKeys.SNOOZE_ATTACK_NOTIFICATION]).then((response) => {
                 const attackTimeInMins = Math.ceil(AttackDetector.isAttackAndTime() / 60);
-                console.log(attackTimeInMins);
                 if (attackTimeInMins === 0) {
                     this._storage.set({ [LocalStorageKeys.SNOOZE_ATTACK_NOTIFICATION]: false });
                     chrome.runtime.sendMessage({ action: MessageActions.SET_BADGE });

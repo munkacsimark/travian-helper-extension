@@ -40,7 +40,8 @@
         background-color: $color-button-default;
         border: 1px solid darken($color-button-default, 20%);
 
-        &[type="submit"] {color: #fff;
+        &[type="submit"] {
+            color: $color-white;
             background-color: $color-button-submit;
             border: 1px solid darken($color-button-submit, 20%);
 
@@ -50,7 +51,7 @@
         }
 
         &.login-data-clear {
-            color: #fff;
+            color: $color-white;
             background-color: $color-button-delete;
             border: 1px solid darken($color-button-delete, 20%);
 
