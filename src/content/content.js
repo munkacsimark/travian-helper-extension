@@ -1,4 +1,4 @@
-import { MessageActions } from '../message_handler';
+import { MessageActions, ContentMessages, BadgeMessages } from '../message_handler';
 import { LocalStorageKeys, LocalStorageService } from '../local_storage_service';
 import ReloadTimer from '../reload_timer';
 import AttackDetector from '../attack_detector';
@@ -12,15 +12,36 @@ class ContentApp {
         this._storage = new LocalStorageService();
         new ReloadTimer();
 
-        if (this._login.loggedOut()) {
+        // login
+        if (location.pathname === '/logout.php' && this._login.loggedOut()) {
             setTimeout(this._login.login, 10000);
         }
-        if (AttackDetector.isAttack()) {
-            chrome.runtime.sendMessage({ action: MessageActions.ATTACK });
+
+        // check for attack
+        if (location.pathname === '/dorf1.php') {
+            this._storage.get([LocalStorageKeys.SNOOZE_ATTACK_NOTIFICATION]).then((response) => {
+                const attackTimeInMins = Math.ceil(AttackDetector.isAttackAndTime() / 60);
+                console.log(attackTimeInMins);
+                if (attackTimeInMins === 0) {
+                    this._storage.set({ [LocalStorageKeys.SNOOZE_ATTACK_NOTIFICATION]: false });
+                    chrome.runtime.sendMessage({ action: MessageActions.SET_BADGE });
+                    return;
+                }
+                chrome.runtime.sendMessage({
+                    action: MessageActions.SET_BADGE,
+                    [BadgeMessages.BADGE_COLOR]: '#f00',
+                    [BadgeMessages.BADGE_TEXT]: `${attackTimeInMins}m`
+                });
+                if (response[LocalStorageKeys.SNOOZE_ATTACK_NOTIFICATION]) return;
+                chrome.runtime.sendMessage({
+                    action: MessageActions.ATTACK,
+                    [ContentMessages.ATTACK_TIME]: attackTimeInMins,
+                });
+            });
         }
-        this._storage.get([
-            LocalStorageKeys.HIDE_GOLD
-        ]).then((response) => {
+
+        // hide gold related stuff
+        this._storage.get([LocalStorageKeys.HIDE_GOLD]).then((response) => {
             if (response[LocalStorageKeys.HIDE_GOLD] === undefined || response[LocalStorageKeys.HIDE_GOLD]) {
                 UiCleaner.clearUi();
             }

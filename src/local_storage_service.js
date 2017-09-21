@@ -8,6 +8,7 @@ const LocalStorageKeys = Object.freeze({
     REFRESH_FROM: 'refresh_from',
     REFRESH_TO: 'refresh_to',
     HIDE_GOLD: 'hide_gold',
+    SNOOZE_ATTACK_NOTIFICATION: 'snooze_attack_notification',
 });
 
 class LocalStorageService {

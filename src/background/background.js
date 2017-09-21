@@ -21,6 +21,8 @@ class BackgroundApp {
             .addListener(this._notificationHandler.click);
         chrome.notifications.onClosed
             .addListener(this._notificationHandler.close);
+        chrome.notifications.onButtonClicked
+            .addListener(this._notificationHandler.buttonClick);
     }
 }
 
