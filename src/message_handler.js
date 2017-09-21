@@ -15,6 +15,10 @@ const MessageActions = Object.freeze({
     SET_BADGE: 'set_badge',
 });
 
+const ContentMessages = Object.freeze({
+    ATTACK_TIME: 'attack_time',
+});
+
 const PopupMessages = Object.freeze({
     USERNAME: 'user_name',
     PASSWORD: 'password',
@@ -42,11 +46,9 @@ class MessageHandler {
     listen = (message, sender, callback) => {
         switch (message.action) {
             case MessageActions.REFRESH:
-                chrome.browserAction.setBadgeText({text: ''});
                 chrome.tabs.reload(sender.tab.id);
                 break;
             case MessageActions.ATTACK:
-                chrome.browserAction.setBadgeText({text: 'Atck'});
                 this._storage.get([
                     LocalStorageKeys.PLAY_SIREN,
                     LocalStorageKeys.SHOW_NOTIFICATION,
@@ -57,7 +59,10 @@ class MessageHandler {
                         notification ? this._siren.loop() : this._siren.play();
                     }
                     if (notification) {
-                        this._notificationHandler.showNotification(NotificationIds.ATTACK);
+                        this._notificationHandler.showNotification(
+                            NotificationIds.ATTACK,
+                            message[ContentMessages.ATTACK_TIME],
+                        );
                     }
                 });
                 break;
@@ -120,6 +125,10 @@ class MessageHandler {
                     [LocalStorageKeys.HIDE_GOLD]: message[PopupMessages.HIDE_GOLD],
                 }).then(callback);
                 break;
+            case MessageActions.SET_BADGE:
+                chrome.browserAction.setBadgeText({text: message[BadgeMessages.BADGE_TEXT] || ''});
+                chrome.browserAction.setBadgeBackgroundColor({text: message[BadgeMessages.BADGE_COLOR] || '#fff'});
+                break;
             default:
                 console.error('Unknown request.');
         }
@@ -131,6 +140,7 @@ class MessageHandler {
 export {
     MessageActions,
     MessageHandler,
+    ContentMessages,
     PopupMessages,
     BadgeMessages,
 };
