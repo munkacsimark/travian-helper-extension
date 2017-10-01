@@ -2,7 +2,7 @@ import { NotificationIds, NotificationHandler } from './notification_handler';
 import { LocalStorageKeys, LocalStorageService } from './local_storage_service';
 
 const MessageActions = Object.freeze({
-    REFRESH: 'refresh',
+    RELOAD: 'reload',
     ATTACK: 'attack',
     LOAD_POPUP_DATA: 'load_popup_data',
     SAVE_LOGIN_DATA: 'save_login_data',
@@ -45,8 +45,37 @@ class MessageHandler {
 
     listen = (message, sender, callback) => {
         switch (message.action) {
-            case MessageActions.REFRESH:
-                chrome.tabs.reload(sender.tab.id);
+            case MessageActions.RELOAD:
+                if (message.href) {
+                    chrome.tabs.update(sender.tab.id, {url: message.href});
+                    return;
+                }
+                this._storage.get(LocalStorageKeys.VILLAGES_TO_CHECK).then((response) => {
+                    const url = new URL(sender.tab.url);
+                    let villageId = Object.keys(response)[0];
+                    if (!villageId) {
+                        villageId = Object.keys(message.villages)[0] || '';
+                        delete message.villages[villageId];
+                        this._storage.set({
+                            [LocalStorageKeys.VILLAGES_TO_CHECK]: message.villages,
+                            [LocalStorageKeys.ORIGINAL_HREF]: message.originalHref
+                        }).then(() => {
+                            chrome.tabs.update(sender.tab.id, {
+                                url: `${url.origin}/dorf1.php?newdid=${villageId}`
+                            });
+                        });
+                    } else {
+                        delete response[villageId];
+                        this._storage.set({
+                            [LocalStorageKeys.VILLAGES_TO_CHECK]: response,
+                            [LocalStorageKeys.ORIGINAL_HREF]: message.originalHref
+                        }).then(() => {
+                            chrome.tabs.update(sender.tab.id, {
+                                url: `${url.origin}/dorf1.php?newdid=${villageId}`
+                            });
+                        });
+                    }
+                });
                 break;
             case MessageActions.ATTACK:
                 this._storage.get([
@@ -127,7 +156,7 @@ class MessageHandler {
                 break;
             case MessageActions.SET_BADGE:
                 chrome.browserAction.setBadgeText({text: message[BadgeMessages.BADGE_TEXT] || ''});
-                chrome.browserAction.setBadgeBackgroundColor({text: message[BadgeMessages.BADGE_COLOR] || '#fff'});
+                chrome.browserAction.setBadgeBackgroundColor({color: message[BadgeMessages.BADGE_COLOR] || '#fff'});
                 break;
             default:
                 console.error('Unknown request.');

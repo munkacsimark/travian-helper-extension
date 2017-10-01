@@ -10,7 +10,30 @@ class ContentApp {
     constructor() {
         this._login = new LoginHandler();
         this._storage = new LocalStorageService();
-        new ReloadTimer();
+
+        this._storage.get([
+            LocalStorageKeys.VILLAGES_TO_CHECK,
+            LocalStorageKeys.ORIGINAL_HREF
+        ]).then((data) => {
+            const originalHref = data[LocalStorageKeys.ORIGINAL_HREF];
+            if (Object.keys(data[LocalStorageKeys.VILLAGES_TO_CHECK]).length > 0) {
+                chrome.runtime.sendMessage({
+                    action: MessageActions.RELOAD,
+                    villages: data[LocalStorageKeys.VILLAGES_TO_CHECK],
+                    originalHref: originalHref ? originalHref : location.href
+                })
+            } else {
+                if (originalHref) {
+                    this._storage.remove(LocalStorageKeys.ORIGINAL_HREF);
+                    chrome.runtime.sendMessage({
+                        action: MessageActions.RELOAD,
+                        href: originalHref,
+                    });
+                } else {
+                    new ReloadTimer();
+                }
+            }
+        })
 
         // login
         if (location.pathname === '/logout.php' && this._login.loggedOut()) {

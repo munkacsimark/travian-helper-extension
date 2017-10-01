@@ -1,5 +1,6 @@
 import { MessageActions } from './message_handler';
 import { LocalStorageKeys } from './local_storage_service';
+import { VillageHandler } from './village_handler';
 
 class ReloadTimer {
 
@@ -24,7 +25,11 @@ class ReloadTimer {
                 const to = data[LocalStorageKeys.REFRESH_TO] || 5;
                 if (parseInt(from) === 0 && parseInt(to) === 0) return;
                 this._refreshTimeout = setTimeout(
-                    () => chrome.runtime.sendMessage({ action: MessageActions.REFRESH }), this._getRandomSec(from, to)
+                    () => chrome.runtime.sendMessage({
+                        action: MessageActions.RELOAD,
+                        villages: VillageHandler.getVillages(),
+                        originalHref: location.href
+                    }), this._getRandomSec(from, to)
                 );
             });
         }, 10000);
