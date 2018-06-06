@@ -14,5 +14,3 @@ Currently working parts:
 - **attack detection** The extension will continuously reload travian in background at random time (default is 2-5min). If someone is attacking you, you will get a notification, or alarm sound, or both.🚨🔊
 - **auto re-login** Sometimes the game logs out. Extension will log back into the game, and it will continue to watching for attacks.
 - **hide unnecessary stuffs** The extension can hide site elements and icons which you can't use without gold.
-
-Feel free to [contribute](https://github.com/munkacsimark/travian-helper-extension/blob/master/CONTRIBUTING.md) or [open issues](https://github.com/munkacsimark/travian-helper-extension/issues). ✊
