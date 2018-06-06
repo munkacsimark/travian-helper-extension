@@ -2,7 +2,7 @@
   "name": "travian-helper-extension",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:munkacsimark/travian-helper-extension.git",
+  "repository": "git@gitlab.com:munkacsimark/travian-helper-extension.git",
   "author": "Munkácsi Márk <munkacsimark@gmail.com>",
   "license": "MIT",
   "scripts": {
